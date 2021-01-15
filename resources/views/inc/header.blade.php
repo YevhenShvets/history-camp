@@ -1,27 +1,34 @@
-<header>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Carousel</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item active">
-            <a class="nav-link" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+<header class="">
+  <div class="container">
+    <div class="row">
+      <div class="col-7 col-md-4 col-lg-4 position-relative">
+        <a href="{{ route('home-page') }}" alt="logo" class="logo">
+          <img src="/history-camp.png" class="img-fluid">
+        </a>
+      </div>
+      <div class="col-5 col-md-8 col-lg-8">
+        <!-- <div class="socials">
+          <div class="custom d-flex align-items-center w-100">
+            <a href="tel:+" class="header__phone d-inline-block">+38</a>
+            <a href="" target="_blank">
+              <img src="" class="img-fluid">
+            </a>
+            <a href="" target="_blank">
+              <img src="" class="img-fluid">
+            </a>
+          </div>
+        </div> -->
+        <div class="nav_">
+          <nav class="top-menu menu d-flex justify-content-end align-items-center">
+            <ul class="nav menu justify-content-end align-items-center mod-list">
+              <li><a href="{{ route('home-page') }}" class="nav-link">Головна</a></li>
+              <li><a href="{{ route('news-page') }}" class="nav-link">Новини</a></li>
+              <li><a href="{{ route('tariff-page') }}" class="nav-link">Тарифи</a></li>
+              <li><a href="{{ route('contact-page') }}" class="nav-link">Контакти</a></li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
-  </nav>
+  </div>
 </header>
