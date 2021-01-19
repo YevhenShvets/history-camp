@@ -42,6 +42,16 @@
                             <br>
 
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tariffModal" data-whatever="{{ $el->name }}/{{ $el->id }}">Замовити</button>
+
+                            @auth()
+                                <div class="d-flex justify-content-center">
+                                    <hr>
+                                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                        <a href="{{ route('admin-edit-tariff', ['id' => $el->id]) }}" class="btn btn-secondary">Редагувати</a>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-whatever="{{ $el->name }}">Видалити</button>
+                                    </div>
+                                </div>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -98,6 +108,22 @@
             </div>
         </div>
 
+        <!-- Modal window -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content p-0">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel"></h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Вихід</button>
+                        <a href="{{ route('admin-delete-tariff', ['id' =>$el->id]) }}" class="btn btn-danger">Видалити</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="toast d-flex align-items-center text-white bg-secondary border-0" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-body">
                 Ваша заява успішно відправлена!
@@ -118,6 +144,12 @@
                 modal.find('.modal-title').text('Замовлення тарифу: ' + tariff);
                 modal.find('.modal-body #tariff-name').val(tariff);
                 modal.find('.modal-body #tariff-id').val(tariff_id);
+            });
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) ;
+                var title = button.data('whatever');
+                var modal = $(this);
+                modal.find('.modal-title').text('Дійсно видалити тариф: ' + title);
             });
         });
     </script>

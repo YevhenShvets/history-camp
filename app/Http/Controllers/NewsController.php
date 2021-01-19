@@ -18,6 +18,8 @@ class NewsController extends Controller{
         $post = DB::select('select * from post where id='.$post_id);
         if(count($post)>0) $post = $post[0];
         else $post = null;
-        return view('news.post', ['post' => $post]);
+        $tags = DB::select('select id, name from tags inner join post_tags on post_tags.id_tag=tags.id where post_tags.id_post=?', [$post_id]);
+        if(count($tags)==0) $tags = NULL;
+        return view('news.post', ['post' => $post, 'tags' => $tags]);
     }
 }

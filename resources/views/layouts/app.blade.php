@@ -14,9 +14,17 @@
     @include('inc.header')
     <main>
         @yield('content')
+
+        
     </main>
-
     @include('inc.footer')
+        
+    @auth()
+        <div class="admin-panel align-items-center">
+            <a href="{{ route('admin-index') }}" class="btn btn-success">Admin-main</a>
 
+            <a href="{{ route('logout') }}" class="btn btn-outline-danger btn-sm">Loguot</a>
+        </div>
+    @endauth
 </body>
 </html>
