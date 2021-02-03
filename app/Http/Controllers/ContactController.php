@@ -18,7 +18,7 @@ class ContactController extends Controller{
         $validator = Validator::make($req->all(), [
             'inputName' => 'required',
             'inputEmail' => 'required|email',
-            'inputEmail' => 'required',
+            'inputPhone' => 'required',
             'inputMessage' => 'required'
         ]);
 
@@ -29,7 +29,7 @@ class ContactController extends Controller{
         }
         $user_name = $req->input("inputName");
         $user_email = $req->input("inputEmail");
-        $user_phone = $req->input("inputEmail");
+        $user_phone = $req->input("inputPhone");
         $user_message = $req->input("inputMessage");
 
         DB::insert("INSERT INTO feedback(date_create, user_name, user_email, user_phone, user_message, answered) VALUES(?, ?, ?, ?, ?, ?)",

@@ -38,7 +38,7 @@
                             <br>
                             {{ $el->price }}
                             <br>
-                            {{ $el->description }}
+                            {!! $el->description !!}
                             <br>
 
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tariffModal" data-whatever="{{ $el->name }}/{{ $el->id }}">Замовити</button>

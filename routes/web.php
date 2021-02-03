@@ -50,4 +50,8 @@ Route::prefix('admin')->middleware('auth')->group(function(){
     Route::get('/tariff/{id}/edit', [Admin\EditController::class, 'tariff_edit'])->name('admin-edit-tariff');
     Route::post('/tariff/{id}/edit/submit', [Admin\EditController::class, 'tariff_edit_submit'])->name('admin-edit-tariff-submit');
     Route::get('/tariff/{id}/delete', [Admin\DeleteController::class, 'tariff_delete'])->name('admin-delete-tariff');
+
+    Route::get('/showTariffs', [Admin\IndexController::class, 'tariff_show'])->name('admin-show-tariff');
+    Route::get('/showFeedback', [Admin\IndexController::class, 'feedback_show'])->name('admin-show-feedback');
+
 });
