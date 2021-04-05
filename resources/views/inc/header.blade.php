@@ -23,8 +23,17 @@
             <ul class="nav menu justify-content-end align-items-center mod-list">
               <li><a href="{{ route('home-page') }}" class="nav-link">Головна</a></li>
               <li><a href="{{ route('news-page') }}" class="nav-link">Новини</a></li>
-              <li><a href="{{ route('tariff-page') }}" class="nav-link">Тарифи</a></li>
+              <li><a href="{{ route('tours-page') }}" class="nav-link">Тури</a></li>
               <li><a href="{{ route('contact-page') }}" class="nav-link">Контакти</a></li>
+              @auth('web')
+              <li><a href="{{ route('user-home') }}" class="nav-link2" style="text-decoration:underline; background-color:rgba(23,255,244, 0.1); padding:0 10px;">{{auth()->user()->name}}</a></li>
+              @else
+              @auth('admin')
+              <li><a href="{{ route('admin-index') }}" class="nav-link2" style="color:rgb(0,40,233);">Адміністратор</a></li>
+              @else
+              <li><a href="{{ route('login') }}" class="nav-link2">Авторизація</a></li>
+              @endauth
+              @endauth
             </ul>
           </nav>
         </div>

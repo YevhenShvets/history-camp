@@ -20,7 +20,7 @@ main{
 }
 
 header{
-    background-color: #499725;
+    background-color:rgba(193,204,19,0.75);
     opacity: 0.93;
 }
 
@@ -84,6 +84,22 @@ header .logo:hover{
 
     -webkit-box-shadow: 4px -1px 16px -4px rgba(0,0,0,0.58); 
     box-shadow: 4px -1px 16px -4px rgba(0,0,0,0.58);
+}
+
+.nav-link2{
+    display: block;
+    margin-left: 10px;
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    color: black;
+    font-size: x-large;
+    text-decoration: none;
+
+}
+
+.nav-link2:hover{
+    background-color: rgb(255, 255, 255);
+    border-bottom: 2px solid rgb(14, 62, 134);
+    opacity: 0.5;
 }
 
 .nav-link:hover{

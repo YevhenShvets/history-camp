@@ -9,7 +9,7 @@ class NewsController extends Controller{
 
 
     public function getAll(Request $req){
-        $data = DB::select('select id, title, date_create, date_update from post;');
+        $data = DB::select('select id, title, picture, date_create, date_update from post;');
         return view('news.all', ['data' => $data]);
     }
 

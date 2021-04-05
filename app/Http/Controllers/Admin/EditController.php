@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Storage;
 
 class EditController extends Controller{
 
@@ -39,13 +39,17 @@ class EditController extends Controller{
         if($picture)
             $picture_data = $picture->openFile()->fread($picture->getSize());
         else $picture_data = NULL;
+        // dd($req);
 
-        if((!$content) && (!$picture)){
+        if($picture_data == null && $content_data == null){
             DB::update("UPDATE post SET title=?, date_update=? WHERE id=?",
             [$title, date('Y-m-d\TH:i'), $post_id]);
-        }else if(!$picture){
+        }else if($picture_data == null){
             DB::update("UPDATE post SET title=?, content=?, date_update=? WHERE id=?",
             [$title, $content_data, date('Y-m-d\TH:i'), $post_id]);
+        }else if($content_data == null){
+            DB::update("UPDATE post SET title=?, picture=?, date_update=? WHERE id=?",
+            [$title, $picture_data, date('Y-m-d\TH:i'), $post_id]);
         }else{
             DB::update("UPDATE post SET title=?, content=?, picture=?, date_update=? WHERE id=?",
             [$title, $content_data, $picture_data, date('Y-m-d\TH:i'), $post_id]);
@@ -102,5 +106,75 @@ class EditController extends Controller{
         }
         
         return redirect()->route('tariff-page');
+    }
+
+    public function tour_edit(Request $req, $id){
+        $tour = DB::select('select * from tour where id='.$id);
+        if(count($tour)>0) $tour = $tour[0];
+        else $tour = null;
+        return view('admin.edit_tour', ['tour' => $tour]);
+    }
+
+    public function tour_edit_submit(Request $req, $id){
+        $inputName = $req->input("inputName");
+        $inputAddress = $req->input("inputAddress");
+        $inputDateStart = $req->input("inputDateStart");
+        $inputDays = $req->input("inputDays");
+        $inputPrice1 = $req->input("inputPrice1");
+        $inputPrice2 = $req->input("inputPrice2");
+        $inputInPrice = $req->input("inputInPrice");
+        $inputNotInPrice = $req->input("inputNotInPrice");
+        $inputShortDescription = $req->input("inputShortDescription");
+        $inputLongDescription = $req->input("inputLongDescription");
+        $inputComplexity = $req->input("inputComplexity");
+        $inputDiscount = $req->input("inputDiscount");
+        $inputAdditionalInformation = $req->input("inputAdditionalInformation");
+
+        DB::update("UPDATE tour SET name=?, address=?, date_start=?, days=?, price_1=?, price_2=?, in_price=?, not_in_price=?, short_description=?, long_description=?, complexity=?, isDiscount=?, additional_information=? WHERE id=?",
+            [$inputName, $inputAddress, $inputDateStart, $inputDays, $inputPrice1, $inputPrice2, $inputInPrice, $inputNotInPrice, $inputShortDescription, $inputLongDescription, $inputComplexity, $inputDiscount, $inputAdditionalInformation, $id]);
+        return redirect()->route('admin-edit-tour', $id);
+    }
+
+    public function tour_edit_submitphoto(Request $request, $id){
+        if ($request->hasFile('inputPicture')) {
+            $image      = $request->file('inputPicture');
+            $fileName   = time() . '.' . $image->getClientOriginalExtension();
+            $img = $image->openFile()->fread($image->getSize());
+            // Storage::disk('local')->put('images/'.$id.'/'.$fileName, $img, 'public');
+            Storage::put('images/'.$id.'/'.$fileName, $img, 'public');
+        } 
+        return redirect()->route('admin-edit-tour', [$id]);
+    }
+
+    public function tour_edit_add_route(Request $req, $id){
+        $routes = DB::select('select * from tour_route where tour_id='.$id);
+        return view('admin.edit_tour_add_route', ['routes' => $routes, 'tour_id' => $id]);
+    }
+
+    public function tour_edit_add_route_submit(Request $req, $id){
+        $inputName = $req->input("inputName");
+        $inputDescription = $req->input("inputDescription");
+
+        DB::insert("insert into tour_route(tour_id, name, description) VALUES(?,?,?)", [$id, $inputName, $inputDescription]);
+
+        return redirect()->route('admin-edit-tour-add-route', $id);
+    }
+
+    public function tour_edit_add_route_delete(Request $req, $id){
+        $route_id = $req->input("inputId");
+
+        DB::delete('delete from tour_route where id='.$route_id);
+
+        return redirect()->route('admin-edit-tour-add-route', $id);
+    }
+
+    public function tour_edit_add_route_edit_submit(Request $req, $id){
+        $route_id = $req->input("inputId");
+        $inputName = $req->input("inputName");
+        $inputDescription = $req->input("inputDescription");
+
+        DB::update('update tour_route SET name=?, description=? WHERE id=?', [$inputName, $inputDescription, $route_id]);
+
+        return redirect()->route('admin-edit-tour-add-route', $id);
     }
 }

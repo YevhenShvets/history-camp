@@ -48,7 +48,8 @@
                                     <hr>
                                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                         <a href="{{ route('admin-edit-tariff', ['id' => $el->id]) }}" class="btn btn-secondary">Редагувати</a>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-whatever="{{ $el->name }}">Видалити</button>
+                                        <!--<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-whatever="{{ $el->name }}">Видалити</button>--!>
+					<a href="{{ route('admin-delete-tariff', ['id' =>$el->id]) }}" class="btn btn-danger">Видалити</a>
                                     </div>
                                 </div>
                             @endauth
@@ -118,7 +119,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Вихід</button>
-                        <a href="{{ route('admin-delete-tariff', ['id' =>$el->id]) }}" class="btn btn-danger">Видалити</a>
+                        
                     </div>
                 </div>
             </div>

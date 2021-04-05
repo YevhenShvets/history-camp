@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title')Головна@endsection
+@section('title')Всі історичні тури@endsection
 
 @section('link')
 <link rel="stylesheet" href="/css/tour.css">
@@ -8,91 +8,53 @@
 
 @section('content')
 <style>
-
-    .img_block{
-        position: relative;
-        z-index:-1;
+    #form1{
+        width:300px;
+        height:50px;
+        font-size:25px;
     }
-    .img_text{
-        text-shadow: 5px 4px 2px rgba(0,0,0,0.3);
-        position: absolute; 
-        top: 50%; 
-        left: 50%; 
-        transform: translate(-50%, -50%); 
-        font-size:120px; 
-        user-select:none;
+    .search_form{
+        margin:60px auto 0 auto; 
+        padding:20px 40px 0 40px; 
+        width:max-content; 
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius:3px;
+        transition: 0.2s;
     }
-img {
-	width: 100%;
-	height: auto;
-}
-.single-blog-item {
-  border: 1px solid #dfdede;
-  box-shadow: 2px 5px 10px #dfdede;
-  margin: 15px auto;
-  padding: 5px;
-  position: relative;
-}
-.blog-content {
-  padding: 15px;
-}
-.blog-content h4 {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-.blog-content h4 a{
-	color:#777;
-	}
-.blog-content p{
-  color: #999;
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 1.3333;
-}
-.blog-date{
-	}
-.blog-date {
-    position: absolute;
-	  background: #337ab7;
-    top: 35px;
-    left: 5px;
-    color: #fff;
-    border-radius: 0 25px 25px 0;
-    padding: 5px 15px;
-    font-weight: 700;
-}
-.more-btn {
-  background: #337ab7;
-  border-radius: 2px;
-  display: block;
-  height: 30px;
-  line-height: 30px;
-  margin: 30px auto auto auto;
-  text-align: center;
-  width: 110px;
-  color: #f1f1f1;
-}
+    .search_form:hover{
+        padding:20px 100px 0 100px;
+    }
 </style>
-    <div class="img_block">
-        <img src="/image.jpg" alt="" style="width:100%; height:500px; object-fit: cover;">
-        <div class="img_text">HistoryCamp</div>
-    </div>
-    <div style="background:rgba(133,255,17,0.2); position:relative;">
-        <div class="container">
-            <div style="text-align:center; font-size:60px; padding-top:100px;">
-                <h1 style="font-size:80px; font-weight:bold;">HistoryCamp</h1> - сайт з історичними турами.
+    <div class="container">
+        <div class="search_form">
+        <form action="{{ route('tours-page-submit') }}" method="POST">
+            @csrf
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="search" name="search" id="form1" placeholder="Назва" class="form-control"/>
+                </div>
+                <button type="submit" class="btn" style="background:rgba(55,155,100, 0.5);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </button>
             </div>
-            <br>
-            <hr style="width:100px; margin:0 auto; height:2px;">
-            <div style="text-align:center; font-size: 50px; color:rgba(0,43,122,0.6); padding-bottom:30px;">
-                Подорожуй, та знай історію своєї України.
-            </div>
-        </div>   
+        </form>
+        <div style="display:flex; justify-content:space-evenly; margin-top:10px;">
+            <a href="{{ route('tours-page', ['search' => 'popular']) }}">Популярні</a>&nbsp;&nbsp;
+            <a href="{{ route('tours-page', ['search' => 'rating']) }}">Рейтингові</a>&nbsp;&nbsp;
+            <a href="{{ route('tours-page', ['search' => 'date']) }}">Найближча дата</a>
+        </div>
+        <!-- <div style="display:flex; justify-content:center; margin-top:10px;">
+            Сортувати по ціні
+        </div> -->
+        </div>
     </div>
-    <div class="container" style="text-align:center;">
-        <h1 style="font-size:40px; margin-top:20px; text-align:left;">Популярні тури</h1>
+    
+    <div class="container" style="margin-top: 5rem !important; text-align:center;">
+    @auth('admin')
+    <h2 style="text-align:center; margin:20px; color:rgba(220,50,60, 0.6);">Щоб редагувати тур, виберіть його і там будуть кнопки "Редагувати|Вилучити"</h2>
+    @endauth
         @forelse ($data as $el)
         <a href="{{ route('tour-id-page', ['id' => $el->id]) }}" style="text-decoration:none; color:black;">
         <div class="my-2 mx-auto p-relative bg-white shadow-1 blue-hover" style="width: 310px; min-height:550px; overflow: hidden; border-radius: 1px; display: inline-block; text-align:left;">
@@ -129,45 +91,14 @@ img {
                 {{ $el->short_description }}&hellip;
                 </p>
             </div>
+            <!-- <a href="{{ route('tour-id-page', ['id' => $el->id]) }}" class="text-uppercase d-inline-block font-weight-medium lts-2px ml-2 mb-2 text-center styled-link">
+                Детальніше
+            </a>      -->
         </div>
         </a>
         @empty
-            <p class="d-flex justify-content-center" style="font-size:28px;">турів не знайдено</p>
+            <p class="d-flex justify-content-center" style="font-size:28px;">Історичні тури не знайдено</p>
         @endforelse
-    </div>
-    <div style="">
-    <div class="container">
-        <h1 style="font-size:40px; padding-top:20px; padding-bottom:10px">Останні новини сайту</h1>
-        <div style="text-align:center; display:block;">
-        @forelse($news as $row)        
-            <div class="" style="width:300px; display:inline-block;">
-            <div class="single-blog-item">
-                        <div class="blog-thumnail" style="background-color:white;">
-                        @isset($row->picture)
-                            <img src="data:image/png;base64,{{ chunk_split(base64_encode($row->picture)) }}" class="" style="object-fit: cover; height:250px;">
-                            @else
-                            <img style="opacity:0.6; object-fit: cover; height:250px;" src="https://img.icons8.com/ios-filled/250/000000/no-image.png" alt="">
-                        @endisset
-                        </div>
-                        <div class="blog-content">
-                            <h4>{{ $row->title }}</h4>
-                            <div class="showme">
-                            </div>
-                            <a style="text-decoration:none;" href="{{ route('news-post', ['id' => $row->id]) }}" class="more-btn">Детальніше</a>
-                        </div>
-                        <span class="blog-date" id='date{{ $loop->index }}'><?php echo (strtotime($row->date_create)); ?></span>
-                    </div>
-            </div>
-            <script>
-                var date = new Date("{{$row->date_create}}");
-                options = {"year":"numeric","month":"short","day":"2-digit"};
-                document.getElementById('date{{$loop->index}}').textContent = date.toLocaleDateString("uk", options);
-            </script>
-        @empty
-                <p>Новини відсутні</p>
-        @endforelse
-        </div>
-        <div style="padding-bottom:30px;"></div>
-    </div>
-    </div>
+    </div>   
+
 @endsection

@@ -69,4 +69,36 @@ class AddController extends Controller{
         [$name, $date_start, $date_end, $price, $description_data, $picture_data]);
         return redirect()->route('tariff-page');
     }
+
+
+    public function tour_add_submit(Request $req){
+        $inputName = $req->input("inputName");
+        $inputAddress = $req->input("inputAddress");
+        $inputDateStart = $req->input("inputDateStart");
+        $inputDays = $req->input("inputDays");
+        $inputPrice1 = $req->input("inputPrice1");
+        $inputPrice2 = $req->input("inputPrice2");
+        $inputInPrice = $req->input("inputInPrice");
+        $inputNotInPrice = $req->input("inputNotInPrice");
+        $inputShortDescription = $req->input("inputShortDescription");
+        $inputLongDescription = $req->input("inputLongDescription");
+        $inputComplexity = $req->input("inputComplexity");
+        $inputDiscount = $req->input("inputDiscount");
+        $inputAdditionalInformation = $req->input("inputAdditionalInformation");
+        
+
+        DB::beginTransaction();
+
+        try {
+            DB::insert("INSERT INTO tour(name, address, date_start, days, price_1, price_2, in_price, not_in_price, short_description, long_description, complexity, isDiscount, additional_information) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [$inputName, $inputAddress, $inputDateStart, $inputDays, $inputPrice1, $inputPrice2, $inputInPrice, $inputNotInPrice, $inputShortDescription, $inputLongDescription, $inputComplexity, $inputDiscount, $inputAdditionalInformation]);    
+            $id = DB::select("SELECT LAST_INSERT_ID() as id;");
+            DB::commit();
+            return redirect()->route('admin-edit-tour', $id[0]->id);
+        } catch (\Throwable $e) {
+            DB::rollback();
+            throw $e;
+        }
+        return redirect()->route('admin-index');
+    }
 }
